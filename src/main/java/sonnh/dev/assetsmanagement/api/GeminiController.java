@@ -20,5 +20,10 @@ public class GeminiController {
     public JsonNode calculate(@RequestBody WinProbabilityRequest request) {
         return service.calculate(request);
     }
+
+    @PostMapping("/gen-prompt")
+    public String genPrompt(@RequestBody WinProbabilityRequest request) {
+        return service.genPrompt(request);
+    }
 }
 
