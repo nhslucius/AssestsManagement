@@ -70,7 +70,7 @@ public class StockCrawlerService {
         Elements sections = overview.select("> div.flex_row");
 
         StockOverviewDto dto = new StockOverviewDto();
-
+        dto.setCompanyName(parseCompanyName(doc));
         dto.setCurrentPrice(parseCurrentPrice(doc));
         dto.setPriceSummary(parsePriceSummary(sections.get(0)));
         dto.setValuation(parseValuation(sections.get(1)));
@@ -214,6 +214,23 @@ public class StockCrawlerService {
         }
 
         return parseDecimal(el.text());
+    }
+
+    private String parseCompanyName(Document doc) {
+
+        Element h1 = doc.selectFirst("div.margin_wrap h1");
+
+        if (h1 == null) {
+            throw new CrawlException("Company name not found", null);
+        }
+
+        // Clone để không ảnh hưởng DOM gốc
+        Element cloned = h1.clone();
+
+        // Remove span chứa mã cổ phiếu
+//        cloned.select("span").remove();
+
+        return cloned.text().trim();
     }
 
 }

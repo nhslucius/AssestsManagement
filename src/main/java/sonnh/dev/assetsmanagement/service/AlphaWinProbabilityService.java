@@ -67,6 +67,7 @@ public class AlphaWinProbabilityService {
         promt.append("===============================================================\n\n");
 
         promt.append("Mã cổ phiếu: ").append(stockCode).append("\n");
+        promt.append("Tên công ty ").append(dto.getCompanyName()).append("\n");
         promt.append("Giá hiện tại: ").append(dto.getCurrentPrice()).append("\n");
         promt.append("Giá người dùng mua vào: ").append(holdingPrice).append("\n\n");
 
