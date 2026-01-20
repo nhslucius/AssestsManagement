@@ -162,40 +162,76 @@ public class AlphaWinProbabilityService {
             BigDecimal holdingPrice
     ) {
 
-        StringBuilder promt = new StringBuilder(2048);
+        StringBuilder prompt = new StringBuilder(4096);
 
-        promt.append("Bạn là AI phân tích định lượng cổ phiếu theo tư duy WorldQuant / systematic trading.\n");
-        promt.append("Bạn không được giả định thêm dữ liệu.\n\n");
-        promt.append("Đọc thông tin từ trang web này https://simplize.vn/co-phieu/").append(stockCode.toUpperCase()).append(".\n\n");
-        promt.append("Tiếp theo đọc thông tin tài chính chi tiết từ trang web này https://simplize.vn/co-phieu/").append(stockCode.toUpperCase()).append("/so-lieu-tai-chinh#chi-so-tai-chinh").append(".\n\n");
-        promt.append("THÔNG TIN CỔ PHIẾU\n");
-        promt.append("Mã cổ phiếu: ").append(stockCode).append("\n");
-        promt.append("Giá người dùng mua vào: ").append(holdingPrice).append("\n\n");
+        prompt.append("Bạn là AI phân tích định lượng cổ phiếu theo tư duy WorldQuant / systematic trading.\n");
+        prompt.append("Bạn KHÔNG được giả định thêm dữ liệu và KHÔNG dự đoán giá tương lai.\n");
+        prompt.append("Mọi kết luận phải dựa trên dữ liệu thực tế bạn thu thập được.\n\n");
 
-        promt.append("Hãy đánh giá XÁC SUẤT THẮNG (%) và mức độ phù hợp của cổ phiếu này ");
-        promt.append("theo từng chiến lược sau:\n");
-        promt.append("1. GOM ĐÁY – DCA CORE\n");
-        promt.append("2. THEO XU HƯỚNG (TREND FOLLOWING)\n");
-        promt.append("3. SWING THEO DÒNG TIỀN\n");
-        promt.append("4. GIỮ DÀI HẠN – QUALITY CORE\n\n");
+        prompt.append("NGUỒN DỮ LIỆU BẮT BUỘC\n");
+        prompt.append("- Thông tin tổng quan cổ phiếu: https://simplize.vn/co-phieu/")
+                .append(stockCode.toUpperCase()).append("\n");
+        prompt.append("- Dữ liệu tài chính và chỉ số tài chính mới nhất từ internet\n\n");
 
-        promt.append("Với MỖI chiến lược, hãy trình bày:\n");
-        promt.append("- Xác suất thắng ước tính (%)\n");
-        promt.append("- Đánh giá: PHÙ HỢP hoặc KHÔNG PHÙ HỢP\n");
-        promt.append("- Lý do chính (ngắn gọn, định lượng)\n\n");
+        prompt.append("===============================================================\n");
+        prompt.append("THÔNG TIN CỔ PHIẾU\n");
+        prompt.append("===============================================================\n\n");
 
-        promt.append("KẾT LUẬN CUỐI CÙNG\n");
-        promt.append("- Hiển thị giá hiện tại\n");
-        promt.append("- Chiến lược phù hợp nhất hiện tại là gì?\n");
-        promt.append("- Xác suất thắng tổng thể là bao nhiêu?\n");
-        promt.append("- Nếu xác suất < 60%, hãy nói rõ vì sao KHÔNG NÊN GIAO DỊCH\n");
-        promt.append("- Nên mua vùng giá bao nhiêu để cải thiện tỉ lệ thắng lên >= 70% \n");
+        prompt.append("Mã cổ phiếu: ").append(stockCode.toUpperCase()).append("\n");
+        prompt.append("Giá người dùng mua vào: ").append(holdingPrice).append("\n\n");
 
-        promt.append("RÀNG BUỘC:\n");
-        promt.append("- Không dự đoán giá tương lai\n");
-        promt.append("- Trình bày theo ngôn ngữ phân tích tài chính\n");
+        prompt.append("===============================================================\n");
+        prompt.append("PHONG CÁCH & CHIẾN LƯỢC GIAO DỊCH CẦN ĐÁNH GIÁ\n");
+        prompt.append("===============================================================\n\n");
 
-        return promt.toString();
+        prompt.append("1. BOTTOM_FISHING_DCA (GOM ĐÁY – DCA CORE)\n");
+        prompt.append("   - Doanh nghiệp có mức nợ thấp, đòn bẩy tài chính không quá cao\n");
+        prompt.append("   - Dòng tiền có dấu hiệu tích lũy (khối lượng ổn định hoặc tăng dần khi giá không tăng mạnh)\n");
+        prompt.append("   - Giá chưa tăng mạnh, còn ở vùng chiết khấu so với lịch sử\n\n");
+
+        prompt.append("2. TREND_FOLLOWING (THEO XU HƯỚNG)\n");
+        prompt.append("   - Giá vượt các vùng kháng cự ngắn hạn hoặc trung hạn\n");
+        prompt.append("   - Khối lượng giao dịch tăng xác nhận xu hướng\n");
+        prompt.append("   - Động lượng giá dương, hạn chế rủi ro mua đuổi\n\n");
+
+        prompt.append("3. SWING_MONEY_FLOW (SWING THEO DÒNG TIỀN)\n");
+        prompt.append("   - Xuất hiện các phiên volume spike bất thường\n");
+        prompt.append("   - Chỉ báo OBV hoặc các chỉ báo dòng tiền cho thấy xu hướng tăng nhanh\n");
+        prompt.append("   - Biến động giá ngắn hạn đủ lớn để khai thác swing\n\n");
+
+        prompt.append("4. LONG_TERM_QUALITY (GIỮ DÀI HẠN – QUALITY CORE)\n");
+        prompt.append("   - Nền tảng tài chính ổn định qua nhiều năm\n");
+        prompt.append("   - ROE / ROA duy trì ở mức tốt so với mặt bằng ngành\n");
+        prompt.append("   - Mô hình kinh doanh ít phụ thuộc vào timing thị trường\n\n");
+
+        prompt.append("===============================================================\n");
+        prompt.append("YÊU CẦU PHÂN TÍCH\n");
+        prompt.append("===============================================================\n\n");
+
+        prompt.append("VỚI MỖI CHIẾN LƯỢC, hãy thực hiện đầy đủ:\n");
+        prompt.append("- Đánh giá mức độ đáp ứng các điều kiện của chiến lược\n");
+        prompt.append("- Ước tính XÁC SUẤT THẮNG (%) nếu áp dụng chiến lược đó\n");
+        prompt.append("- Kết luận: PHÙ HỢP hoặc KHÔNG PHÙ HỢP\n");
+        prompt.append("- Lý do chính, mang tính định lượng (không chung chung)\n\n");
+
+        prompt.append("===============================================================\n");
+        prompt.append("KẾT LUẬN CUỐI CÙNG\n");
+        prompt.append("===============================================================\n\n");
+
+        prompt.append("- Giá hiện tại của cổ phiếu tại thời điểm dữ liệu\n");
+        prompt.append("- Chiến lược phù hợp nhất hiện tại là gì?\n");
+        prompt.append("- Xác suất thắng tổng thể (dựa trên chiến lược phù hợp nhất)\n");
+        prompt.append("- Nếu xác suất < 60%, hãy giải thích rõ vì sao rủi ro vẫn cao\n");
+        prompt.append("- Để cải thiện xác suất thắng lên >= 70%:\n");
+        prompt.append("  + Nên mua ở vùng giá nào để có biên an toàn tốt hơn\n");
+        prompt.append("  + Những điều kiện nào cần thay đổi (giá, dòng tiền, tài chính)\n\n");
+
+        prompt.append("RÀNG BUỘC:\n");
+        prompt.append("- Không dự đoán giá tương lai\n");
+        prompt.append("- Không khuyến nghị cảm tính\n");
+        prompt.append("- Trình bày như một báo cáo phân tích tài chính chuyên nghiệp\n");
+
+        return prompt.toString();
     }
 
 

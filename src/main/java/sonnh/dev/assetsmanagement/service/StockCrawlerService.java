@@ -70,6 +70,8 @@ public class StockCrawlerService {
         Elements sections = overview.select("> div.flex_row");
 
         StockOverviewDto dto = new StockOverviewDto();
+
+        dto.setCurrentPrice(parseCurrentPrice(doc));
         dto.setPriceSummary(parsePriceSummary(sections.get(0)));
         dto.setValuation(parseValuation(sections.get(1)));
         dto.setMarketMetric(parseMarketMetric(sections.get(2)));
@@ -202,4 +204,16 @@ public class StockCrawlerService {
         }
         return Long.parseLong(m.group());
     }
+
+    private BigDecimal parseCurrentPrice(Document doc) {
+
+        Element el = doc.selectFirst("#stockname_close");
+
+        if (el == null) {
+            throw new CrawlException("Current price element not found", null);
+        }
+
+        return parseDecimal(el.text());
+    }
+
 }

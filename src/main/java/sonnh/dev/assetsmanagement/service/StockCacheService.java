@@ -38,7 +38,7 @@ public class StockCacheService {
         redisTemplate.opsForValue().set(
                 key,
                 dto,
-                Duration.ofHours(16)
+                Duration.ofMinutes(60)
         );
     }
 
