@@ -17,13 +17,23 @@ public class GeminiController {
     private final AlphaWinProbabilityService service;
 
     @PostMapping("/win-probability")
-    public JsonNode calculate(@RequestBody WinProbabilityRequest request) {
+    public String calculate(@RequestBody WinProbabilityRequest request) {
         return service.calculate(request);
+    }
+
+    @PostMapping("/win-probability/v2")
+    public String calculate2(@RequestBody WinProbabilityRequest request) {
+        return service.calculate2(request);
     }
 
     @PostMapping("/gen-prompt")
     public String genPrompt(@RequestBody WinProbabilityRequest request) {
         return service.genPrompt(request);
+    }
+
+    @PostMapping("/gen-prompt/v2")
+    public String genPromptVer2(@RequestBody WinProbabilityRequest request) {
+        return service.genPrompt2(request);
     }
 }
 
