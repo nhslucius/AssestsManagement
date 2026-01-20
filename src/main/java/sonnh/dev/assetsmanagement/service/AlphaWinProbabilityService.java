@@ -147,10 +147,10 @@ public class AlphaWinProbabilityService {
         promt.append("- Chiến lược phù hợp nhất hiện tại là gì?\n");
         promt.append("- Xác suất thắng tổng thể là bao nhiêu?\n");
         promt.append("- Nếu xác suất < 60%, hãy nói rõ vì sao KHÔNG NÊN GIAO DỊCH\n\n");
+        promt.append("- Nên mua vùng giá bao nhiêu để cải thiện tỉ lệ thắng lên >= 70% \n\n");
 
         promt.append("RÀNG BUỘC:\n");
         promt.append("- Không dự đoán giá tương lai\n");
-        promt.append("- Không dùng JSON, không markdown\n");
         promt.append("- Trình bày theo ngôn ngữ phân tích tài chính\n");
 
         return promt.toString();
@@ -167,8 +167,7 @@ public class AlphaWinProbabilityService {
         promt.append("Bạn là AI phân tích định lượng cổ phiếu theo tư duy WorldQuant / systematic trading.\n");
         promt.append("Bạn không được giả định thêm dữ liệu.\n\n");
         promt.append("Đọc thông tin từ trang web này https://simplize.vn/co-phieu/").append(stockCode.toUpperCase()).append(".\n\n");
-        promt.append("Đọc thông tin từ trang web này https://www.cophieu68.vn/quote/summary.php?id=").append(stockCode).append(".\n\n");
-
+        promt.append("Tiếp theo đọc thông tin tài chính chi tiết từ trang web này https://simplize.vn/co-phieu/").append(stockCode.toUpperCase()).append("/so-lieu-tai-chinh#chi-so-tai-chinh").append(".\n\n");
         promt.append("THÔNG TIN CỔ PHIẾU\n");
         promt.append("Mã cổ phiếu: ").append(stockCode).append("\n");
         promt.append("Giá người dùng mua vào: ").append(holdingPrice).append("\n\n");
@@ -186,48 +185,19 @@ public class AlphaWinProbabilityService {
         promt.append("- Lý do chính (ngắn gọn, định lượng)\n\n");
 
         promt.append("KẾT LUẬN CUỐI CÙNG\n");
-
+        promt.append("- Hiển thị giá hiện tại\n");
         promt.append("- Chiến lược phù hợp nhất hiện tại là gì?\n");
         promt.append("- Xác suất thắng tổng thể là bao nhiêu?\n");
-        promt.append("- Nếu xác suất < 60%, hãy nói rõ vì sao KHÔNG NÊN GIAO DỊCH\n\n");
+        promt.append("- Nếu xác suất < 60%, hãy nói rõ vì sao KHÔNG NÊN GIAO DỊCH\n");
+        promt.append("- Nên mua vùng giá bao nhiêu để cải thiện tỉ lệ thắng lên >= 70% \n");
 
         promt.append("RÀNG BUỘC:\n");
         promt.append("- Không dự đoán giá tương lai\n");
-        promt.append("- Không dùng JSON, không markdown\n");
         promt.append("- Trình bày theo ngôn ngữ phân tích tài chính\n");
 
         return promt.toString();
     }
 
-
-
-    private String extractJson(String raw) {
-
-        if (raw == null) {
-            throw new RuntimeException("Gemini response is null");
-        }
-
-        String cleaned = raw.trim();
-
-        // Remove ```json or ```
-        if (cleaned.startsWith("```")) {
-            cleaned = cleaned
-                    .replaceFirst("^```json", "")
-                    .replaceFirst("^```", "")
-                    .replaceFirst("```$", "")
-                    .trim();
-        }
-
-        // Extra safety: lấy từ { ... }
-        int start = cleaned.indexOf('{');
-        int end = cleaned.lastIndexOf('}');
-
-        if (start >= 0 && end > start) {
-            return cleaned.substring(start, end + 1);
-        }
-
-        throw new RuntimeException("Cannot extract JSON from Gemini response");
-    }
 
     public String genPrompt(WinProbabilityRequest request) {
         StockOverviewDto overview =
