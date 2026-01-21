@@ -56,105 +56,105 @@ public class AlphaWinProbabilityService {
         BalanceSheetDto balance = dto.getBalanceSheet();
         FinancialStrengthDto strength = dto.getFinancialStrength();
 
-        StringBuilder promt = new StringBuilder(2048);
+        StringBuilder prompt = new StringBuilder(2048);
 
-        promt.append("Bạn là AI phân tích định lượng cổ phiếu theo tư duy WorldQuant / systematic trading.\n");
-        promt.append("Bạn không được giả định thêm dữ liệu.\n\n");
-        promt.append("Tìm kiếm thêm tin tức và dữ liệu internet.\n\n");
+        prompt.append("Bạn là AI phân tích định lượng cổ phiếu theo tư duy WorldQuant / systematic trading.\n");
+        prompt.append("Bạn không được giả định thêm dữ liệu.\n\n");
+        prompt.append("Truy cập trang web https://simplize.vn/co-phieu/").append(stockCode.toUpperCase()).append(" và lấy thêm thông tin về cổ phiếu .\n\n");
 
-        promt.append("===============================================================\n");
-        promt.append("THÔNG TIN CỔ PHIẾU\n");
-        promt.append("===============================================================\n\n");
+        prompt.append("===============================================================\n");
+        prompt.append("THÔNG TIN CỔ PHIẾU\n");
+        prompt.append("===============================================================\n\n");
 
-        promt.append("Mã cổ phiếu: ").append(stockCode).append("\n");
-        promt.append("Tên công ty ").append(dto.getCompanyName()).append("\n");
-        promt.append("Giá hiện tại: ").append(dto.getCurrentPrice()).append("\n");
-        promt.append("Giá người dùng mua vào: ").append(holdingPrice).append("\n\n");
+        prompt.append("Mã cổ phiếu: ").append(stockCode).append("\n");
+        prompt.append("Tên công ty ").append(dto.getCompanyName()).append("\n");
+        prompt.append("Giá hiện tại: ").append(dto.getCurrentPrice()).append("\n");
+        prompt.append("Giá người dùng mua vào: ").append(holdingPrice).append("\n\n");
 
-        promt.append("---------------------------------------------------------------\n");
-        promt.append("1. DIỄN BIẾN GIÁ & THANH KHOẢN NGẮN HẠN\n");
-        promt.append("---------------------------------------------------------------\n\n");
+        prompt.append("---------------------------------------------------------------\n");
+        prompt.append("1. DIỄN BIẾN GIÁ & THANH KHOẢN NGẮN HẠN\n");
+        prompt.append("---------------------------------------------------------------\n\n");
 
-        promt.append("- Giá tham chiếu: ").append(price.getReferencePrice()).append("\n");
-        promt.append("- Giá mở cửa: ").append(price.getOpenPrice()).append("\n");
-        promt.append("- Giá cao nhất trong phiên: ").append(price.getHighPrice()).append("\n");
-        promt.append("- Giá thấp nhất trong phiên: ").append(price.getLowPrice()).append("\n");
-        promt.append("- Khối lượng khớp lệnh trong phiên: ").append(price.getVolume()).append("\n\n");
+        prompt.append("- Giá tham chiếu: ").append(price.getReferencePrice()).append("\n");
+        prompt.append("- Giá mở cửa: ").append(price.getOpenPrice()).append("\n");
+        prompt.append("- Giá cao nhất trong phiên: ").append(price.getHighPrice()).append("\n");
+        prompt.append("- Giá thấp nhất trong phiên: ").append(price.getLowPrice()).append("\n");
+        prompt.append("- Khối lượng khớp lệnh trong phiên: ").append(price.getVolume()).append("\n\n");
 
-        promt.append("Nhận xét: Biên độ trong phiên phản ánh mức độ biến động và hành vi cung cầu ngắn hạn.\n\n");
+        prompt.append("Nhận xét: Biên độ trong phiên phản ánh mức độ biến động và hành vi cung cầu ngắn hạn.\n\n");
 
-        promt.append("---------------------------------------------------------------\n");
-        promt.append("2. ĐỊNH GIÁ & HIỆU QUẢ KINH DOANH\n");
-        promt.append("---------------------------------------------------------------\n\n");
+        prompt.append("---------------------------------------------------------------\n");
+        prompt.append("2. ĐỊNH GIÁ & HIỆU QUẢ KINH DOANH\n");
+        prompt.append("---------------------------------------------------------------\n\n");
 
-        promt.append("- EPS hiện tại: ").append(valuation.getEps()).append("\n");
-        promt.append("- P/E: ").append(valuation.getPe()).append("\n");
-        promt.append("- P/B: ").append(valuation.getPb()).append("\n");
-        promt.append("- Giá trị sổ sách (BVPS): ").append(valuation.getBookValue()).append("\n");
-        promt.append("- ROA: ").append(valuation.getRoa()).append(" %\n");
-        promt.append("- ROE: ").append(valuation.getRoe()).append(" %\n\n");
+        prompt.append("- EPS hiện tại: ").append(valuation.getEps()).append("\n");
+        prompt.append("- P/E: ").append(valuation.getPe()).append("\n");
+        prompt.append("- P/B: ").append(valuation.getPb()).append("\n");
+        prompt.append("- Giá trị sổ sách (BVPS): ").append(valuation.getBookValue()).append("\n");
+        prompt.append("- ROA: ").append(valuation.getRoa()).append(" %\n");
+        prompt.append("- ROE: ").append(valuation.getRoe()).append(" %\n\n");
 
-        promt.append("---------------------------------------------------------------\n");
-        promt.append("3. QUY MÔ, THANH KHOẢN & BIẾN ĐỘNG TRUNG HẠN\n");
-        promt.append("---------------------------------------------------------------\n\n");
+        prompt.append("---------------------------------------------------------------\n");
+        prompt.append("3. QUY MÔ, THANH KHOẢN & BIẾN ĐỘNG TRUNG HẠN\n");
+        prompt.append("---------------------------------------------------------------\n\n");
 
-        promt.append("- Vốn hóa thị trường: ").append(market.getMarketCap()).append("\n");
-        promt.append("- Khối lượng cổ phiếu lưu hành: ").append(market.getListedVolume()).append("\n");
-        promt.append("- Khối lượng giao dịch trung bình 52 tuần: ").append(market.getAvgVolume52w()).append("\n");
-        promt.append("- Biên độ giá 52 tuần: ")
+        prompt.append("- Vốn hóa thị trường: ").append(market.getMarketCap()).append("\n");
+        prompt.append("- Khối lượng cổ phiếu lưu hành: ").append(market.getListedVolume()).append("\n");
+        prompt.append("- Khối lượng giao dịch trung bình 52 tuần: ").append(market.getAvgVolume52w()).append("\n");
+        prompt.append("- Biên độ giá 52 tuần: ")
                 .append(market.getHigh52w()).append(" – ").append(market.getLow52w()).append("\n\n");
 
-        promt.append("---------------------------------------------------------------\n");
-        promt.append("4. CẤU TRÚC TÀI CHÍNH\n");
-        promt.append("---------------------------------------------------------------\n\n");
+        prompt.append("---------------------------------------------------------------\n");
+        prompt.append("4. CẤU TRÚC TÀI CHÍNH\n");
+        prompt.append("---------------------------------------------------------------\n\n");
 
-        promt.append("- Tổng nợ: ").append(balance.getDebt()).append("\n");
-        promt.append("- Vốn chủ sở hữu: ").append(balance.getEquity()).append("\n");
-        promt.append("- Tỷ lệ nợ / vốn chủ sở hữu: ").append(balance.getDebtToEquity()).append(" %\n");
-        promt.append("- Tỷ lệ vốn chủ sở hữu / tổng tài sản: ")
+        prompt.append("- Tổng nợ: ").append(balance.getDebt()).append("\n");
+        prompt.append("- Vốn chủ sở hữu: ").append(balance.getEquity()).append("\n");
+        prompt.append("- Tỷ lệ nợ / vốn chủ sở hữu: ").append(balance.getDebtToEquity()).append(" %\n");
+        prompt.append("- Tỷ lệ vốn chủ sở hữu / tổng tài sản: ")
                 .append(balance.getEquityToAsset()).append(" %\n\n");
 
-        promt.append("---------------------------------------------------------------\n");
-        promt.append("5. DÒNG TIỀN & SỨC MẠNH TÀI CHÍNH\n");
-        promt.append("---------------------------------------------------------------\n\n");
+        prompt.append("---------------------------------------------------------------\n");
+        prompt.append("5. DÒNG TIỀN & SỨC MẠNH TÀI CHÍNH\n");
+        prompt.append("---------------------------------------------------------------\n\n");
 
-        promt.append("- Sức mạnh EPS: ").append(strength.getEpsStrength()).append(" %\n");
-        promt.append("- Sức mạnh ROE: ").append(strength.getRoeStrength()).append(" %\n");
-        promt.append("- Điểm hiệu quả đầu tư tổng hợp: ")
+        prompt.append("- Sức mạnh EPS: ").append(strength.getEpsStrength()).append(" %\n");
+        prompt.append("- Sức mạnh ROE: ").append(strength.getRoeStrength()).append(" %\n");
+        prompt.append("- Điểm hiệu quả đầu tư tổng hợp: ")
                 .append(strength.getEfficiencyScore()).append(" / 5\n");
-        promt.append("- Sức mạnh PB: ").append(strength.getPbStrength()).append(" %\n");
-        promt.append("- Sức mạnh tăng giá: ").append(strength.getPriceGrowth()).append(" %\n\n");
+        prompt.append("- Sức mạnh PB: ").append(strength.getPbStrength()).append(" %\n");
+        prompt.append("- Sức mạnh tăng giá: ").append(strength.getPriceGrowth()).append(" %\n\n");
 
-        promt.append("===============================================================\n");
-        promt.append("ĐÁNH GIÁ THEO CÁC CHIẾN LƯỢC\n");
-        promt.append("===============================================================\n\n");
+        prompt.append("===============================================================\n");
+        prompt.append("ĐÁNH GIÁ THEO CÁC CHIẾN LƯỢC\n");
+        prompt.append("===============================================================\n\n");
 
-        promt.append("Hãy đánh giá XÁC SUẤT THẮNG (%) và mức độ phù hợp của cổ phiếu này ");
-        promt.append("theo từng chiến lược sau:\n");
-        promt.append("1. GOM ĐÁY – DCA CORE\n");
-        promt.append("2. THEO XU HƯỚNG (TREND FOLLOWING)\n");
-        promt.append("3. SWING THEO DÒNG TIỀN\n");
-        promt.append("4. GIỮ DÀI HẠN – QUALITY CORE\n\n");
+        prompt.append("Hãy đánh giá XÁC SUẤT THẮNG (%) và mức độ phù hợp của cổ phiếu này ");
+        prompt.append("theo từng chiến lược sau:\n");
+        prompt.append("1. GOM ĐÁY – DCA CORE\n");
+        prompt.append("2. THEO XU HƯỚNG (TREND FOLLOWING)\n");
+        prompt.append("3. SWING THEO DÒNG TIỀN\n");
+        prompt.append("4. GIỮ DÀI HẠN – QUALITY CORE\n\n");
 
-        promt.append("Với MỖI chiến lược, hãy trình bày:\n");
-        promt.append("- Xác suất thắng ước tính (%)\n");
-        promt.append("- Đánh giá: PHÙ HỢP hoặc KHÔNG PHÙ HỢP\n");
-        promt.append("- Lý do chính (ngắn gọn, định lượng)\n\n");
+        prompt.append("Với MỖI chiến lược, hãy trình bày:\n");
+        prompt.append("- Xác suất thắng ước tính (%)\n");
+        prompt.append("- Đánh giá: PHÙ HỢP hoặc KHÔNG PHÙ HỢP\n");
+        prompt.append("- Lý do chính (ngắn gọn, định lượng)\n\n");
 
-        promt.append("===============================================================\n");
-        promt.append("KẾT LUẬN CUỐI CÙNG\n");
-        promt.append("===============================================================\n\n");
+        prompt.append("===============================================================\n");
+        prompt.append("KẾT LUẬN CUỐI CÙNG\n");
+        prompt.append("===============================================================\n\n");
 
-        promt.append("- Chiến lược phù hợp nhất hiện tại là gì?\n");
-        promt.append("- Xác suất thắng tổng thể là bao nhiêu?\n");
-        promt.append("- Nếu xác suất < 60%, hãy nói rõ vì sao KHÔNG NÊN GIAO DỊCH\n\n");
-        promt.append("- Nên mua vùng giá bao nhiêu để cải thiện tỉ lệ thắng lên >= 70% \n\n");
+        prompt.append("- Chiến lược phù hợp nhất hiện tại là gì?\n");
+        prompt.append("- Xác suất thắng tổng thể là bao nhiêu?\n");
+        prompt.append("- Nếu xác suất < 60%, hãy nói rõ vì sao KHÔNG NÊN GIAO DỊCH\n\n");
+        prompt.append("- Nên mua vùng giá bao nhiêu để cải thiện tỉ lệ thắng lên >= 70% \n\n");
 
-        promt.append("RÀNG BUỘC:\n");
-        promt.append("- Không dự đoán giá tương lai\n");
-        promt.append("- Trình bày theo ngôn ngữ phân tích tài chính\n");
+        prompt.append("RÀNG BUỘC:\n");
+        prompt.append("- Không dự đoán giá tương lai\n");
+        prompt.append("- Trình bày theo ngôn ngữ phân tích tài chính\n");
 
-        return promt.toString();
+        return prompt.toString();
     }
 
 

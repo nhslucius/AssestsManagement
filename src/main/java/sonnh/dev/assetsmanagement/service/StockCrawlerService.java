@@ -126,8 +126,8 @@ public class StockCrawlerService {
 
         MarketMetricDto dto = new MarketMetricDto();
         dto.setBeta(parseDecimal(values.get(0).text()));
-        dto.setMarketCap(values.get(1).text());
-        dto.setListedVolume(values.get(2).text());
+        dto.setMarketCap(values.get(1).text().replace("Bi", "Tỷ").replace("Mi", "triệu"));
+        dto.setListedVolume(values.get(2).text().replace("Bi", "Tỷ").replace("Mi", "triệu"));
         dto.setAvgVolume52w(parseLong(values.get(3).text()));
 
         String[] highLow = values.get(4).text().split("-");
