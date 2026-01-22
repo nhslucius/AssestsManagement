@@ -1,6 +1,7 @@
 package sonnh.dev.assetsmanagement.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,6 +17,7 @@ import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StockCrawlerService {
 
     private final String defaultUserAgent;
@@ -25,11 +27,14 @@ public class StockCrawlerService {
     public StockOverviewDto crawlOverview(String stockCode) {
 
         // 1. Check cache
-        StockOverviewDto cached = cacheService.get(stockCode);
-        if (cached != null) {
-            return cached;
+        try {
+            StockOverviewDto cached = cacheService.get(stockCode);
+            if (cached != null) {
+                return cached;
+            }
+        }catch (Exception e){
+            log.error("StockCrawlerService cacheService exception", e);
         }
-
         // 2. Crawl web
         StockOverviewDto fresh = crawlFromWeb(stockCode);
 
