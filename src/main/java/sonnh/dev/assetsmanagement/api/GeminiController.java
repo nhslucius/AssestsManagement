@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sonnh.dev.assetsmanagement.request.WinProbabilityRequest;
 import sonnh.dev.assetsmanagement.service.AlphaWinProbabilityService;
+import sonnh.dev.assetsmanagement.service.LmStudioService;
 
 @RestController
 @RequestMapping("/api/ai")
@@ -15,6 +16,7 @@ import sonnh.dev.assetsmanagement.service.AlphaWinProbabilityService;
 public class GeminiController {
 
     private final AlphaWinProbabilityService service;
+    private final LmStudioService lmStudioService;
 
     @PostMapping("/win-probability")
     public String calculate(@RequestBody WinProbabilityRequest request) {
@@ -34,6 +36,16 @@ public class GeminiController {
     @PostMapping("/gen-prompt/v2")
     public String genPromptVer2(@RequestBody WinProbabilityRequest request) {
         return service.genPrompt2(request);
+    }
+
+    @PostMapping("/win-probability/v3")
+    public String calculate3(@RequestBody WinProbabilityRequest request) {
+        return service.calculate3(request);
+    }
+
+    @PostMapping("/prompt")
+    public String sendPrompt(@RequestBody WinProbabilityRequest request) {
+        return lmStudioService.sendPrompt(request);
     }
 }
 

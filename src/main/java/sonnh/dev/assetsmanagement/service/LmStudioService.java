@@ -176,6 +176,7 @@ public class LmStudioService {
 
         prompt.append("Bạn là AI phân tích định lượng cổ phiếu theo tư duy WorldQuant / systematic trading.\n");
         prompt.append("Bạn không được giả định thêm dữ liệu.\n\n");
+
 //        prompt.append("Tìm kiếm thêm tin tức và dữ liệu internet.\n\n");
 
         prompt.append("===============================================================\n");

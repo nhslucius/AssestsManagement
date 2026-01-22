@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import sonnh.dev.assetsmanagement.client.AiClient;
+import sonnh.dev.assetsmanagement.constant.AiProvider;
+import sonnh.dev.assetsmanagement.domain.AiClientFactory;
 import sonnh.dev.assetsmanagement.dto.*;
 import sonnh.dev.assetsmanagement.request.WinProbabilityRequest;
 
@@ -15,6 +18,23 @@ public class AlphaWinProbabilityService {
 
     private final StockCrawlerService stockCrawlerService;
     private final GeminiClientService geminiClientService;
+    private final AiClientFactory aiClientFactory;
+
+    public String calculate3(WinProbabilityRequest request) {
+        StockOverviewDto overview =
+                stockCrawlerService.crawlOverview(request.getStockCode());
+
+        String prompt = buildPrompt(
+                request.getStockCode(),
+                request.getHoldingPrice(),
+                overview
+        );
+
+        AiClient aiClient = aiClientFactory.getClient(AiProvider.OLLAMA);
+
+        return aiClient.generate(prompt);
+    }
+
 
     public String calculate(WinProbabilityRequest request) {
 
@@ -27,8 +47,6 @@ public class AlphaWinProbabilityService {
                 overview
         );
 
-        System.out.println("Prompt: " + prompt);
-
         return geminiClientService.generateText(prompt);
     }
 
@@ -37,8 +55,6 @@ public class AlphaWinProbabilityService {
         String prompt = buildPrompt2(
                 request.getStockCode(),
                 request.getHoldingPrice());
-
-        System.out.println("Prompt: " + prompt);
 
         return geminiClientService.generateText(prompt);
     }
@@ -60,8 +76,8 @@ public class AlphaWinProbabilityService {
 
         prompt.append("Bạn là AI phân tích định lượng cổ phiếu theo tư duy WorldQuant / systematic trading.\n");
         prompt.append("Bạn không được giả định thêm dữ liệu.\n\n");
-        prompt.append("Truy cập trang web https://simplize.vn/co-phieu/").append(stockCode.toUpperCase()).append(" và lấy thêm thông tin về cổ phiếu .\n\n");
-
+//        prompt.append("Truy cập trang web https://simplize.vn/co-phieu/").append(stockCode.toUpperCase()).append(" và lấy thêm thông tin về cổ phiếu .\n\n");
+        prompt.append("Truy cập https://static.tcbs.com.vn/oneclick/" + stockCode.toUpperCase() +".pdf để lấy thông tin phân tích cổ phiếu chi tiết\n\n");
         prompt.append("===============================================================\n");
         prompt.append("THÔNG TIN CỔ PHIẾU\n");
         prompt.append("===============================================================\n\n");
@@ -152,8 +168,9 @@ public class AlphaWinProbabilityService {
 
         prompt.append("RÀNG BUỘC:\n");
         prompt.append("- Không dự đoán giá tương lai\n");
+        prompt.append("- Hiệu suất đầu tư dự kiến là bao nhiêu \n");
         prompt.append("- Trình bày theo ngôn ngữ phân tích tài chính\n");
-
+        System.out.println(prompt);
         return prompt.toString();
     }
 
@@ -231,7 +248,7 @@ public class AlphaWinProbabilityService {
         prompt.append("- Không dự đoán giá tương lai\n");
         prompt.append("- Không khuyến nghị cảm tính\n");
         prompt.append("- Trình bày như một báo cáo phân tích tài chính chuyên nghiệp\n");
-
+        System.out.println(prompt);
         return prompt.toString();
     }
 
