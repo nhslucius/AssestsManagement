@@ -1,7 +1,5 @@
 package sonnh.dev.assetsmanagement.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import sonnh.dev.assetsmanagement.client.AiClient;
@@ -20,7 +18,7 @@ public class AlphaWinProbabilityService {
     private final GeminiClientService geminiClientService;
     private final AiClientFactory aiClientFactory;
 
-    public String calculate3(WinProbabilityRequest request) {
+    public String calculateByOllama(WinProbabilityRequest request) {
         StockOverviewDto overview =
                 stockCrawlerService.crawlOverview(request.getStockCode());
 
@@ -36,7 +34,7 @@ public class AlphaWinProbabilityService {
     }
 
 
-    public String calculate(WinProbabilityRequest request) {
+    public String calculateByGemini(WinProbabilityRequest request) {
 
         StockOverviewDto overview =
                 stockCrawlerService.crawlOverview(request.getStockCode());
@@ -50,7 +48,7 @@ public class AlphaWinProbabilityService {
         return geminiClientService.generateText(prompt);
     }
 
-    public String calculate2(WinProbabilityRequest request) {
+    public String calculateByGemini2(WinProbabilityRequest request) {
 
         String prompt = buildPrompt2(
                 request.getStockCode(),
@@ -270,6 +268,21 @@ public class AlphaWinProbabilityService {
                 request.getStockCode(),
                 request.getHoldingPrice()
         );
+    }
+
+    public String calculateByDeepSeek(WinProbabilityRequest request) {
+        StockOverviewDto overview =
+                stockCrawlerService.crawlOverview(request.getStockCode());
+
+        String prompt = buildPrompt(
+                request.getStockCode(),
+                request.getHoldingPrice(),
+                overview
+        );
+
+        AiClient aiClient = aiClientFactory.getClient(AiProvider.DEEPSEEK);
+
+        return aiClient.generate(prompt);
     }
 }
 

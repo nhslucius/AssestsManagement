@@ -14,7 +14,7 @@ public class LmStudioClientAdapter implements AiClient {
     @Override
     public String generate(String prompt) {
         WinProbabilityRequest request = new WinProbabilityRequest();
-        return lmStudioService.sendPrompt(request);
+        return lmStudioService.calculateByLmStudio(request);
     }
 }
 

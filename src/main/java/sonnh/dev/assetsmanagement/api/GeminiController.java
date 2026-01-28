@@ -1,6 +1,5 @@
 package sonnh.dev.assetsmanagement.api;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,14 +17,14 @@ public class GeminiController {
     private final AlphaWinProbabilityService service;
     private final LmStudioService lmStudioService;
 
-    @PostMapping("/win-probability")
-    public String calculate(@RequestBody WinProbabilityRequest request) {
-        return service.calculate(request);
+    @PostMapping("/win-probability/gemini")
+    public String calculateByGemini(@RequestBody WinProbabilityRequest request) {
+        return service.calculateByGemini(request);
     }
 
-    @PostMapping("/win-probability/v2")
-    public String calculate2(@RequestBody WinProbabilityRequest request) {
-        return service.calculate2(request);
+    @PostMapping("/win-probability/gemini/v2")
+    public String calculateByGemini2(@RequestBody WinProbabilityRequest request) {
+        return service.calculateByGemini2(request);
     }
 
     @PostMapping("/gen-prompt")
@@ -38,14 +37,19 @@ public class GeminiController {
         return service.genPrompt2(request);
     }
 
-    @PostMapping("/win-probability/v3")
-    public String calculate3(@RequestBody WinProbabilityRequest request) {
-        return service.calculate3(request);
+    @PostMapping("/win-probability/ollama")
+    public String calculateByOllama(@RequestBody WinProbabilityRequest request) {
+        return service.calculateByOllama(request);
     }
 
-    @PostMapping("/prompt")
-    public String sendPrompt(@RequestBody WinProbabilityRequest request) {
-        return lmStudioService.sendPrompt(request);
+    @PostMapping("/win-probability/deepseek")
+    public String calculateByDeepSeek(@RequestBody WinProbabilityRequest request) {
+        return service.calculateByDeepSeek(request);
+    }
+
+    @PostMapping("/win-probability/lm-studio")
+    public String calculateByLmStudio(@RequestBody WinProbabilityRequest request) {
+        return lmStudioService.calculateByLmStudio(request);
     }
 }
 

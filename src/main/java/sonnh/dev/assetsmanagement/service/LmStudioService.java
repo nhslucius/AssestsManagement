@@ -28,7 +28,7 @@ public class LmStudioService {
     @Value("${lmstudio.model}")
     private String model;
 
-    public String sendPrompt(WinProbabilityRequest request) {
+    public String calculateByLmStudio(WinProbabilityRequest request) {
 
         String url = baseUrl + "/chat/completions";
         StockOverviewDto overview =
