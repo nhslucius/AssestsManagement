@@ -155,7 +155,8 @@ public class AlphaWinProbabilityService {
         prompt.append("Với MỖI chiến lược, hãy trình bày:\n");
         prompt.append("- Xác suất thắng ước tính (%)\n");
         prompt.append("- Đánh giá: PHÙ HỢP hoặc KHÔNG PHÙ HỢP\n");
-        prompt.append("- Lý do chính (ngắn gọn, định lượng)\n\n");
+        prompt.append("- Lý do chính (ngắn gọn, định lượng)\n");
+        prompt.append("- Nếu là mã ngân hàng thì không xem xét nợ )\n\n");
 
         prompt.append("===============================================================\n");
         prompt.append("KẾT LUẬN CUỐI CÙNG\n");

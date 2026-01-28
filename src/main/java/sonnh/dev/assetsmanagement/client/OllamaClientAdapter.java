@@ -58,7 +58,7 @@ public class OllamaClientAdapter implements AiClient {
         if (response.getBody() == null) {
             throw new RuntimeException("Empty response from Ollama");
         }
-
+        System.out.println(response.getBody().getResponse());
         return response.getBody().getResponse();
     }
 
